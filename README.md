@@ -2,7 +2,7 @@
 ## Project 2: Tournament results
 
 ### Info
-This project deals with Python, PostgreSQL, and Psycopg. We used these tools to create some functionality around running a [Swiss-system tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament). I've come across this style of tournament before and I like it a lot. Everyone gets to play a lot and the better players still get to progress as expected (and generally a winner gets to do winner-type stuff at the end).
+This project deals with Python, PostgreSQL, and Psycopg. We used these tools to create some functionality around running a [Swiss-system tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament). I've come across this style of tournament before and I like it a lot. Everyone gets to play and the better players still get to progress as expected (and generally a winner gets to do winner-type stuff at the end).
 
 ### How you might use this
 There are several potentially useful functions defined in 'tournament.py'. A possible use case might be to take a look at those functions and use them to build a DIY tournament tool. They could be extended as appropriate. As it stands, this project isn't probably super useful out of the box.
