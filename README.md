@@ -9,7 +9,7 @@ There are several potentially useful functions defined in 'tournament.py'. A pos
 
 #### Functions contained in 'tournament.py'
 
-connect - Meant to connect to the database. Already set up for you.
+connect - Meant to connect to the database.
 
 deleteMatches - Remove all the matches records from the database.
 
@@ -26,7 +26,7 @@ reportMatch - This is to simply populate the matches table and record the winner
 swissPairings - Returns a list of pairs of players for the next round of a match. Here all we are doing is the pairing of alternate players from the player standings table, zipping them up and appending them to a list with values:
 (id1, name1, id2, name2)
 
-(As described in the Udacity project notes)
+(Most of these are taken verbatim from the Udacity project notes)
 
 ### Prerequisites
 * Platform:
