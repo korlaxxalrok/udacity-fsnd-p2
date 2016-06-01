@@ -47,4 +47,4 @@ swissPairings - Returns a list of pairs of players for the next round of a match
   * Run '\i tournament.sql' to create the DB and tables
 * To use the Python functions:
   * You can test them all out by running Python interactively (shell or IDLE (not tested)) and doing 'import * from tournament'. Do something with them, see if they work :)
-  * There is a test script that could, at the very least, help you verify that you have DB access configured as well as the attendant Python files in the right place/you are working out of the right place.
+  * There is a test script ['tournament_test.py'] that could, at the very least, help you verify that you have DB access configured as well as the attendant Python files assembled and you are working out of the correct directory.

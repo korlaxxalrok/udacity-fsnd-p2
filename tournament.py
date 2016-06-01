@@ -3,27 +3,25 @@
 # tournament.py -- implementation of a Swiss-system tournament
 #
 
+
 import psycopg2
 
 
-def connect():
-    """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+def connect(database_name="tournament"):
+    try:
+        conn = psycopg2.connect("dbname={}".format(database_name))
+        c = conn.cursor()
+        return conn, c
+    except:
+        print("<error message>")
 
 
 def deleteMatches():
     """Remove all the match records from the database."""
 
-    conn = connect()
-    c = conn.cursor()
-
-    c.execute("DELETE FROM matches")
-
-    # We also need to touch up other match data from table 'players'.
-    # Reset wins, losses, and matches in table 'players':
-    c.execute("UPDATE players SET wins = 0")
-    c.execute("UPDATE players SET losses = 0")
-    c.execute("UPDATE players SET matches = 0")
+    conn, c = connect()
+    SQL = "DELETE FROM matches;"
+    c.execute(SQL)
     conn.commit()
     conn.close()
 
@@ -31,9 +29,9 @@ def deleteMatches():
 def deletePlayers():
     """Remove all the player records from the database."""
 
-    conn = connect()
-    c = conn.cursor()
-    c.execute("DELETE FROM players")
+    conn, c = connect()
+    SQL = "DELETE FROM players;"
+    c.execute(SQL)
     conn.commit()
     conn.close()
 
@@ -41,11 +39,12 @@ def deletePlayers():
 def countPlayers():
     """Returns the number of players currently registered."""
 
-    conn = connect()
-    c = conn.cursor()
-    c.execute("SELECT * FROM players")
+    conn, c = connect()
+    SQL = "SELECT * FROM players;"
+    c.execute(SQL)
     rowcount = c.rowcount
     return rowcount
+    conn.close()
 
 
 def registerPlayer(name):
@@ -58,9 +57,10 @@ def registerPlayer(name):
       name: the player's full name (need not be unique).
     """
 
-    conn = connect()
-    c = conn.cursor()
-    c.execute("INSERT INTO players (name) VALUES (%s)", (name,))
+    conn, c = connect()
+    SQL = "INSERT INTO players (name) VALUES (%s);"
+    data = (name,)
+    c.execute(SQL, data)
     conn.commit()
     conn.close()
 
@@ -79,11 +79,10 @@ def playerStandings():
         matches: the number of matches the player has played
     """
 
-    conn = connect()
-    c = conn.cursor()
-    c.execute("SELECT id, name, wins, matches from players ORDER BY wins")
+    conn, c = connect()
+    SQL = "SELECT id, name, wins, matchesplayed FROM standings ORDER BY wins;"
+    c.execute(SQL)
     return c.fetchall()
-    conn.commit()
     conn.close()
 
 
@@ -95,19 +94,10 @@ def reportMatch(winner, loser):
       loser:  the id number of the player who lost
     """
 
-    conn = connect()
-    c = conn.cursor()
-
-    # Insert winner/loser into table 'matches'.
-    c.execute("INSERT INTO matches (winner, loser) VALUES (%s, %s)", (winner, loser))
-
-    # Update winner/loser in table 'players'.
-    c.execute("UPDATE players SET wins = wins + 1 WHERE id = %s", (winner,))
-    c.execute("UPDATE players SET losses = losses + 1 WHERE id = %s", (loser,))
-
-    # Update matches in table 'players'.
-    c.execute("UPDATE players SET matches = wins + losses WHERE id =%s", (winner,))
-    c.execute("UPDATE players SET matches = wins + losses WHERE id =%s", (loser,))
+    conn, c = connect()
+    SQL = "INSERT INTO matches (winner, loser) VALUES (%s, %s);"
+    data = (winner, loser)
+    c.execute(SQL, data)
     conn.commit()
     conn.close()
 
@@ -128,28 +118,23 @@ def swissPairings():
         name2: the second player's name
     """
 
-    conn = connect()
-    c = conn.cursor()
+    conn, c = connect()
 
-    # INFO:
+    # Match pairing procedure
     #
-    # Create an iteration counter by dividing our row count by two. This lets
-    # us iterate correctly so that we can create a new pair each iteration.
-    #
-    # Sort on wins to give our table some consistency. We could create pairs
-    # in any direction after this sort.
-    #
-    # We iterate, add the resulting tuples together, and then append
-    # and return our list.
-
-    #1) Create iter variable.
-    c.execute("SELECT * from players")
+    # Create an iteration counter by dividing our table record row count by two.
+    # This lets us know how many pairs we need to make.
+    SQL = "SELECT * from players;"
+    c.execute(SQL)
     iter = c.rowcount / 2
 
-    #2) Sort on wins.
-    c.execute("SELECT id, name from players ORDER BY wins")
+    # Sort on wins to give our table some consistency. We could create pairs
+    # in any direction after this sort.
+    SQL = "SELECT id, name from wins_counter ORDER BY wins;"
+    c.execute(SQL)
 
-    #3) Iterate, create pairing tuples, and append to our list.
+    # We iterate based on the counter, add the resulting tuples together, append
+    # and return our list.
     pairings = []
     while iter != 0:
         tup = c.fetchone() + c.fetchone()
