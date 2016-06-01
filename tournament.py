@@ -120,8 +120,7 @@ def swissPairings():
 
     conn, c = connect()
 
-    # Match pairing procedure
-    #
+    # --------Match pairing procedure--------
     # Create an iteration counter by dividing our table record row count by two.
     # This lets us know how many pairs we need to make.
     SQL = "SELECT * from players;"
