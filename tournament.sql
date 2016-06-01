@@ -11,7 +11,6 @@ CREATE DATABASE tournament;
 \c tournament
 
 -- Create table 'players'.
-
 CREATE TABLE players (
   id serial NOT NULL PRIMARY KEY,
   name text NOT NULL
