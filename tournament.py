@@ -132,8 +132,8 @@ def swissPairings():
     SQL = "SELECT id, name from wins_counter ORDER BY wins;"
     c.execute(SQL)
 
-    # We iterate based on the counter, add the resulting tuples together, append
-    # and return our list.
+    # We iterate based on the counter, add the resulting tuples together,
+    # append, and return our list.
     pairings = []
     while iter != 0:
         tup = c.fetchone() + c.fetchone()
