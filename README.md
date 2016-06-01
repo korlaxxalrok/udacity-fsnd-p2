@@ -9,7 +9,7 @@ There are several potentially useful functions defined in 'tournament.py'. A pos
 
 #### Functions contained in 'tournament.py'
 
-connect - Meant to connect to the database.
+connect - Meant to connect to the database and return a cursor.
 
 deleteMatches - Remove all the matches records from the database.
 
