@@ -44,7 +44,6 @@ def countPlayers():
     c.execute(SQL)
     rowcount = c.rowcount
     return rowcount
-    conn.close()
 
 
 def registerPlayer(name):
@@ -83,7 +82,6 @@ def playerStandings():
     SQL = "SELECT id, name, wins, matchesplayed FROM standings ORDER BY wins;"
     c.execute(SQL)
     return c.fetchall()
-    conn.close()
 
 
 def reportMatch(winner, loser):
